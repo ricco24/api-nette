@@ -5,17 +5,22 @@ Highly customizable and easy to setup REST api handling for Nette framework.
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ricco24/api-nette/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ricco24/api-nette/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/ricco24/api-nette/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ricco24/api-nette/?branch=master)
 [![Build Status](https://travis-ci.org/ricco24/api-nette.svg?branch=master)](https://travis-ci.org/ricco24/api-nette)
+[![Packagist](https://img.shields.io/packagist/v/kelemen/api-nette.svg?maxAge=14400)](https://packagist.org/packages/kelemen/api-nette)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/3f401779-98cc-4191-8339-8fa211c917f5/big.png)](https://insight.sensiolabs.com/projects/3f401779-98cc-4191-8339-8fa211c917f5)
 
 ## Installation
+
+```
+composer require kelemen/api-nette
+```
 
 ## Prepare to use
 
 1. First of all you need an Api presenter for handle api requests. You can use `Kelemen\ApiNette\Presenter\ApiPresenter` or write you own.
 2. Register new mapping in config.neon
     
-    ```
+    ```php
     application:
         mapping:
             Api: Kelemen\ApiNette\Presenter\*Presenter
@@ -32,7 +37,7 @@ Highly customizable and easy to setup REST api handling for Nette framework.
 
 4. Configure Api (example from config.neon)
 
-    ```
+    ```php
     services:
         api:
             class: Kelemen\ApiNette\Api
@@ -55,7 +60,7 @@ REST api routes can be defined with shortcut functions (for most used HTTP metho
 - delete
 - options
 
-But you can add any HTTP method processing by `add($method, $pattern, $handler, $params = [])` function.
+Or you can add any HTTP method processing with `add($method, $pattern, $handler, $params = [])` function.
 ```php
 $api = new Api(...);
 $api->add('purge', 'purge/urls', 'Handlers\PurgeHandler')
