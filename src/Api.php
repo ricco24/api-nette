@@ -5,6 +5,7 @@ namespace Kelemen\ApiNette;
 use Kelemen\ApiNette\Exception\UnresolvedHandlerException;
 use Kelemen\ApiNette\Exception\UnresolvedRouteException;
 use Kelemen\ApiNette\Exception\ValidationFailedException;
+use Kelemen\ApiNette\Route\BaseRouteResolver;
 use Kelemen\ApiNette\Route\RouteResolverInterface;
 use Kelemen\ApiNette\Route\Route;
 use Kelemen\ApiNette\Route\RouteContainer;
@@ -38,23 +39,23 @@ class Api
     private $validator;
 
     /**
-     * @param RouteResolverInterface $routeResolver
      * @param Request $request
      * @param Response $response
      * @param Container $container
+     * @param RouteResolverInterface $routeResolver
      * @param ValidatorInterface $validator
      */
     public function __construct(
-        RouteResolverInterface $routeResolver,
         Request $request,
         Response $response,
         Container $container,
+        RouteResolverInterface $routeResolver = null,
         ValidatorInterface $validator = null
     ) {
-        $this->routeResolver = $routeResolver;
         $this->request = $request;
         $this->response = $response;
         $this->container = $container;
+        $this->routeResolver = $routeResolver ?: new BaseRouteResolver($request);
         $this->validator = $validator ?: new Validator();
         $this->routes = new RouteContainer();
     }

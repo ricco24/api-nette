@@ -150,8 +150,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $container = new Container();
         $request = new Request(new UrlScript());
         $response = new Response();
-        $routeResolver = new BaseRouteResolver($request);
-        $api = new Api($routeResolver, $request, $response, $container);
+        $api = new Api($request, $response, $container);
 
         $presenter = new ApiPresenter($api);
         $presenter->injectPrimary($container, null, null, $request, $response);

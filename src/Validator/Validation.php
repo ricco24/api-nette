@@ -19,10 +19,10 @@ class Validation
     /**
      * @param string $type
      * @param string $key
-     * @param string $rules
+     * @param null|string $rules
      * @param null|string $resultKey
      */
-    public function __construct($type, $key, $rules, $resultKey = null)
+    public function __construct($type, $key, $rules = null, $resultKey = null)
     {
         $this->type = $type;
         $this->key = $key;

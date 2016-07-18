@@ -106,7 +106,6 @@ class ApiTest extends PHPUnit_Framework_TestCase
         $container = new Container();
         $request = new Request(new UrlScript(), null, null, null, null, null, $method);
         $response = new Response();
-        $routeResolver = new BaseRouteResolver($request);
-        return new Api($routeResolver, $request, $response, $container);
+        return new Api($request, $response, $container);
     }
 }

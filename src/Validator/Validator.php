@@ -102,7 +102,7 @@ class Validator implements ValidatorInterface
             }
 
             $data = $this->inputs[$validation->getType()]->getData();
-            $rules = explode('|', $validation->getRules());
+            $rules = $validation->getRules() !== null ? explode('|', $validation->getRules()) : [];
 
             // Check if param is mandatory
             if (in_array('required', $rules)) {

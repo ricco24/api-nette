@@ -12,6 +12,17 @@ abstract class BaseHandler
     protected $values;
 
     /**
+     * Get validated value or default if key is not set (for optional values)
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    protected function getValue($key, $default = null)
+    {
+        return isset($this->values[$key]) ? $this->values[$key] : $default;
+    }
+
+    /**
      * @param array $values
      */
     public function setValidatedValues(array $values)
