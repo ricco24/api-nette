@@ -5,6 +5,8 @@ namespace Kelemen\ApiNette;
 use Kelemen\ApiNette\Exception\UnresolvedHandlerException;
 use Kelemen\ApiNette\Exception\UnresolvedRouteException;
 use Kelemen\ApiNette\Exception\ValidationFailedException;
+use Kelemen\ApiNette\Logger\Logger;
+use Kelemen\ApiNette\Response\ApiResponse;
 use Kelemen\ApiNette\Route\BaseRouteResolver;
 use Kelemen\ApiNette\Route\RouteResolverInterface;
 use Kelemen\ApiNette\Route\Route;
@@ -12,7 +14,6 @@ use Kelemen\ApiNette\Route\RouteContainer;
 use Kelemen\ApiNette\Validator\Input\CustomInput;
 use Kelemen\ApiNette\Validator\Validator;
 use Kelemen\ApiNette\Validator\ValidatorInterface;
-use Nette\Application\IResponse;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
 use Nette\Http\Request;
@@ -149,22 +150,25 @@ class Api
 
     /**
      * @param string $url
-     * @return IResponse
+     * @param Logger $logger
+     * @return ApiResponse
      * @throws UnresolvedHandlerException
      * @throws UnresolvedRouteException
      * @throws ValidationFailedException
      */
-    public function run($url)
+    public function run($url, Logger $logger)
     {
         $resolvedRoute = $this->routeResolver->resolve($this->routes, $url);
         if (!$resolvedRoute) {
             throw new UnresolvedRouteException();
         }
+        $logger->setResolvedRoute($resolvedRoute);
 
         $handler = $this->getFromContainer($resolvedRoute->getRoute()->getHandler());
         if (!$handler) {
             throw new UnresolvedHandlerException('Handler ' . $resolvedRoute->getRoute()->getHandler() . ' not found in container');
         }
+        $logger->setHandler($handler);
 
         $this->validator->setInput('path', new CustomInput($resolvedRoute->getParams()));
         $this->validator->validate($handler->validate());
