@@ -4,8 +4,9 @@ namespace Kelemen\ApiNette\Tests;
 
 use Kelemen\ApiNette\Api;
 use Kelemen\ApiNette\Exception\UnresolvedHandlerException;
-use Kelemen\ApiNette\Route\BaseRouteResolver;
+use Kelemen\ApiNette\Logger\Logger;
 use Kelemen\ApiNette\Route\Route;
+use Kelemen\ApiNette\Tests\Mock\DummyLoggerStorage;
 use Nette\DI\Container;
 use Nette\Http\Request;
 use Nette\Http\Response;
@@ -25,7 +26,7 @@ class ApiTest extends PHPUnit_Framework_TestCase
         $api->add('post', 'user/{id}', '#hander1');
         $api->post('message/{id}', '#hander2');
 
-        $api->run('user/10');
+        $api->run('user/10', $this->prepareLogger());
     }
 
     /**
@@ -107,5 +108,13 @@ class ApiTest extends PHPUnit_Framework_TestCase
         $request = new Request(new UrlScript(), null, null, null, null, null, $method);
         $response = new Response();
         return new Api($request, $response, $container);
+    }
+
+    /**
+     * @return Logger
+     */
+    private function prepareLogger()
+    {
+        return new Logger(new Request(new UrlScript()), new DummyLoggerStorage());
     }
 }

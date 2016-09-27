@@ -39,6 +39,8 @@ composer require kelemen/api-nette
 
     ```php
     services:
+        - Kelemen\ApiNette\Logger\Storage\DummyLoggerStorage
+        - Kelemen\ApiNette\Logger\Logger
         api:
             class: Kelemen\ApiNette\Api
             setup:

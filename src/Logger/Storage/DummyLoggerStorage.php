@@ -7,7 +7,7 @@ use Kelemen\ApiNette\Response\ApiResponse;
 use Kelemen\ApiNette\Route\ResolvedRoute;
 use Nette\Http\Request;
 
-interface LoggerStorageInterface
+class DummyLoggerStorage implements LoggerStorageInterface
 {
     public function store(
         Request $httpRequest,
@@ -15,5 +15,7 @@ interface LoggerStorageInterface
         $duration,
         ResolvedRoute $resolvedRoute = null,
         BaseHandler $handler = null
-    );
+    ) {
+        // Do nothing
+    }
 }

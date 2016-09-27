@@ -22,9 +22,6 @@ class Logger
     /** @var BaseHandler */
     private $handler;
 
-    /** @var string */
-    private $requestUrl;
-
     /** @var int */
     private $start = 0;
 
@@ -36,14 +33,6 @@ class Logger
     {
         $this->httpRequest = $httpRequest;
         $this->storage = $storage;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setRequestUrl($url)
-    {
-        $this->requestUrl = $url;
     }
 
     /**
@@ -77,12 +66,11 @@ class Logger
     public function finish(ApiResponse $response)
     {
         $this->storage->store(
-            $this->requestUrl,
             $this->httpRequest,
-            $this->resolvedRoute,
-            $this->handler,
             $response,
-            round((microtime(true) - $this->start) * 1000)
+            round((microtime(true) - $this->start) * 1000),
+            $this->resolvedRoute,
+            $this->handler
         );
     }
 }
