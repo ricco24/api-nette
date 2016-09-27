@@ -2,8 +2,10 @@
 
 ## [Unreleased][unreleased]
 
-## 0.2.0 - 2016-07-18
+### Added
+- Logger
 
+## 0.2.0 - 2016-07-18
 ### Changed
 - RouteResolver is not mandatory in Api class constructor (BaseRouteResolver will be used if is not set)
 - $rules are optional for Validation

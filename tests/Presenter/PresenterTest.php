@@ -3,15 +3,17 @@
 namespace Kelemen\ApiNette\Tests;
 
 require_once __DIR__ . '/../Mock/DummyLogger.php';
+require_once __DIR__ . '/../Mock/DummyLoggerStorage.php';
 require_once __DIR__ . '/../Mock/DummyHandler.php';
 require_once __DIR__ . '/../Mock/HandlerWithValidation.php';
 require_once __DIR__ . '/../Mock/HandlerWithException.php';
 
 use Kelemen\ApiNette\Api;
+use Kelemen\ApiNette\Logger\Logger;
 use Kelemen\ApiNette\Presenter\ApiPresenter;
-use Kelemen\ApiNette\Route\BaseRouteResolver;
 use Kelemen\ApiNette\Tests\Mock\DummyHandler;
 use Kelemen\ApiNette\Tests\Mock\DummyLogger;
+use Kelemen\ApiNette\Tests\Mock\DummyLoggerStorage;
 use Kelemen\ApiNette\Tests\Mock\HandlerWithException;
 use Kelemen\ApiNette\Tests\Mock\HandlerWithValidation;
 use Nette\DI\Container;
@@ -152,9 +154,17 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $response = new Response();
         $api = new Api($request, $response, $container);
 
-        $presenter = new ApiPresenter($api);
+        $presenter = new ApiPresenter($api, $this->prepareLogger());
         $presenter->injectPrimary($container, null, null, $request, $response);
 
         return [$api, $presenter, $container];
+    }
+
+    /**
+     * @return Logger
+     */
+    private function prepareLogger()
+    {
+        return new Logger(new Request(new UrlScript()), new DummyLoggerStorage());
     }
 }

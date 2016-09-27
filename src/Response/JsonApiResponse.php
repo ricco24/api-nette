@@ -6,14 +6,18 @@ use Nette\Application\Responses\JsonResponse;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 use Nette\Utils\Json;
+use Nette\Utils\JsonException;
 
-class JsonApiResponse extends JsonResponse
+class JsonApiResponse extends JsonResponse implements ApiResponse
 {
     /** @var int */
     private $code;
 
     /** @var string */
     private $charset;
+
+    /** @var string|null */
+    private $encodedData = null;
 
     /**
      * @param int $code
@@ -27,6 +31,7 @@ class JsonApiResponse extends JsonResponse
         $this->charset = $charset;
         $this->code = $code;
     }
+
     /**
      * Return api response http code
      * @return integer
@@ -35,6 +40,19 @@ class JsonApiResponse extends JsonResponse
     {
         return $this->code;
     }
+
+    /**
+     * @return string
+     * @throws JsonException
+     */
+    public function getEncodedData()
+    {
+        if ($this->encodedData === null) {
+            $this->encodedData = Json::encode($this->getPayload());
+        }
+        return $this->encodedData;
+    }
+
     /**
      * Return encoding charset for http response
      * @return string
@@ -53,7 +71,7 @@ class JsonApiResponse extends JsonResponse
         $httpResponse->setCode($this->getCode());
         $httpResponse->setContentType($this->getContentType(), $this->charset);
         $httpResponse->setExpiration(false);
-        $result = Json::encode($this->getPayload());
+        $result = $this->getEncodedData();
         $httpResponse->setHeader('Content-Length', strlen($result));
         echo $result;
     }

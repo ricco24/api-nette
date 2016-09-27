@@ -4,7 +4,7 @@ namespace Kelemen\ApiNette;
 
 use Kelemen\ApiNette\Exception\UnresolvedMiddlewareException;
 use Kelemen\ApiNette\Handler\BaseHandler;
-use Nette\Application\IResponse;
+use Kelemen\ApiNette\Response\ApiResponse;
 use Nette\DI\Container;
 use Nette\DI\MissingServiceException;
 use Nette\Http\Request;
@@ -38,7 +38,7 @@ class Runner
      * Run
      * @param Request $request
      * @param Response $response
-     * @return IResponse
+     * @return ApiResponse
      * @throws UnresolvedMiddlewareException
      */
     public function __invoke(Request $request, Response $response)

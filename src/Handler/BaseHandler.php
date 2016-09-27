@@ -2,7 +2,7 @@
 
 namespace Kelemen\ApiNette\Handler;
 
-use Nette\Application\IResponse;
+use Kelemen\ApiNette\Response\ApiResponse;
 use Nette\Http\Request;
 use Nette\Http\Response;
 
@@ -43,7 +43,7 @@ abstract class BaseHandler
      * @param Request $request
      * @param Response $response
      * @param callable $next
-     * @return IResponse
+     * @return ApiResponse
      */
     abstract public function __invoke(Request $request, Response $response, callable $next);
 }
