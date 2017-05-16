@@ -41,7 +41,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $result = $presenter->run($request);
 
         $this->assertEquals(200, $result->getCode());
-        $this->assertEquals(['message' => 'I am dummy'], $result->getPayload());
+        $this->assertEquals(['message' => 'I am dummy'], $result->getData());
         $this->assertEquals('application/json', $result->getContentType());
         $this->assertEquals('utf-8', $result->getCharset());
     }
@@ -58,7 +58,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $result = $presenter->run($request);
 
         $this->assertEquals(400, $result->getCode());
-        $this->assertEquals(['error' => 'Unresolved api route'], $result->getPayload());
+        $this->assertEquals(['error' => 'Unresolved api route'], $result->getData());
         $this->assertEquals('application/json', $result->getContentType());
         $this->assertEquals('utf-8', $result->getCharset());
     }
@@ -75,7 +75,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $result = $presenter->run($request);
 
         $this->assertEquals(500, $result->getCode());
-        $this->assertEquals(['error' => 'Internal server error'], $result->getPayload());
+        $this->assertEquals(['error' => 'Internal server error'], $result->getData());
         $this->assertEquals('application/json', $result->getContentType());
         $this->assertEquals('utf-8', $result->getCharset());
     }
@@ -95,7 +95,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $result = $presenter->run($request);
 
         $this->assertEquals(500, $result->getCode());
-        $this->assertEquals(['error' => 'Internal server error'], $result->getPayload());
+        $this->assertEquals(['error' => 'Internal server error'], $result->getData());
         $this->assertEquals('application/json', $result->getContentType());
         $this->assertEquals('utf-8', $result->getCharset());
     }
@@ -115,8 +115,8 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $result = $presenter->run($request);
 
         $this->assertEquals(400, $result->getCode());
-        $this->assertEquals('Bad input parameter', $result->getPayload()['error']);
-        $this->assertEquals(1, count($result->getPayload()['errors']));
+        $this->assertEquals('Bad input parameter', $result->getData()['error']);
+        $this->assertEquals(1, count($result->getData()['errors']));
         $this->assertEquals('application/json', $result->getContentType());
         $this->assertEquals('utf-8', $result->getCharset());
     }
@@ -136,7 +136,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
         $result = $presenter->run($request);
 
         $this->assertEquals(500, $result->getCode());
-        $this->assertEquals(['error' => 'Internal server error'], $result->getPayload());
+        $this->assertEquals(['error' => 'Internal server error'], $result->getData());
         $this->assertEquals('application/json', $result->getContentType());
         $this->assertEquals('utf-8', $result->getCharset());
     }
