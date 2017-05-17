@@ -253,5 +253,14 @@ If you want custom error responses, create and register your own presenter.
 | Kelemen\ApiNette\Exception\ValidationFailedException | Some of registered validations failed |
 | Kelemen\ApiNette\Exception\ValidatorException | Input type use in validation is not registered in validator |
 
-## Backlog
-- [ ] wildcard route
+## Base Implementations
+
+### Middleware
+#### CORSMiddleware
+Setup Access-Control-Allow-Origin and Access-Control-Allow-Credentials headers. Middleware has 3 modes:
+- all - returns allow-origin as "*". Credentials header disabled by standard.
+- mirror - returns request "Origin" header in allow-origin and credentials header can be configured.
+- custom - allow-origin and credentials header has to be configured.
+
+### Handler
+#### OptionsPreflightHandler

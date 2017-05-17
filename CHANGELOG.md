@@ -1,6 +1,14 @@
 # Change log
 
 ## [Unreleased][unreleased]
+### Added
+- CORSMiddleware
+- OptionsPreflightHandler
+- TextApiResponse
+- XmlApiResponse
+
+### Changed
+- JsonApiResponse
 
 ## 0.3.0 - 2016-09-27
 ### Added
