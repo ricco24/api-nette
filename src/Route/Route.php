@@ -73,7 +73,7 @@ class Route
      */
     public function getParams()
     {
-        preg_match_all('#\{(.*?)\}#', $this->pattern, $params);
+        preg_match_all('#<(.*?)>#', $this->pattern, $params);
         return $params[1];
     }
 
@@ -83,6 +83,11 @@ class Route
      */
     public function getPregPattern()
     {
-        return '^' . preg_replace('#\{.*?\}#', '([^/]*)?', $this->pattern) . '$';
+        $pattern = $this->pattern;
+        foreach ($this->getParams() as $param) {
+            $pattern = str_replace('<' . $param . '>', "(?'$param'[^/]*)?", $pattern);
+        }
+
+        return '^' . $pattern . '$';
     }
 }

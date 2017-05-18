@@ -54,14 +54,10 @@ class BaseRouteResolver implements RouteResolverInterface
         $values = $values[0];
         array_shift($values);
 
-        $result = [];
-        foreach ($route->getParams() as $key => $param) {
-            // If parameter key is not set in matched values, route not match and return false
-            if (!isset($values[$key])) {
-                return false;
-            }
-            $result[$param] = $values[$key];
-        }
+        $routeParams = $route->getParams();
+        $result = array_filter($values, function ($param) use ($routeParams) {
+            return in_array($param, $routeParams, true);
+        }, ARRAY_FILTER_USE_KEY);
 
         return $result;
     }

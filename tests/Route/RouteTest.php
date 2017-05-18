@@ -12,9 +12,9 @@ class RouteTest extends PHPUnit_Framework_TestCase
      */
     public function testBasics()
     {
-        $route = new Route('post', 'user/{id}', 'Kelemen/ApiNette/Handler/UserGetHandler');
+        $route = new Route('post', 'user/<id>', 'Kelemen/ApiNette/Handler/UserGetHandler');
         $this->assertEquals('post', $route->getMethod());
-        $this->assertEquals('user/{id}', $route->getPattern());
+        $this->assertEquals('user/<id>', $route->getPattern());
         $this->assertEquals('Kelemen/ApiNette/Handler/UserGetHandler', $route->getHandler());
     }
 
@@ -40,13 +40,13 @@ class RouteTest extends PHPUnit_Framework_TestCase
      */
     public function testParamsParseFromPattern()
     {
-        $route = new Route('post', 'user/{id}', '#handler');
+        $route = new Route('post', 'user/<id>', '#handler');
         $this->assertEquals(['id'], $route->getParams());
 
-        $route = new Route('post', 'user/{id}/message/{messageId}', '#handler');
+        $route = new Route('post', 'user/<id>/message/<messageId>', '#handler');
         $this->assertEquals(['id', 'messageId'], $route->getParams());
 
-        $route = new Route('post', 'user/{id}/{subId}/{subSubId}', '#handler');
+        $route = new Route('post', 'user/<id>/<subId>/<subSubId>', '#handler');
         $this->assertEquals(['id', 'subId', 'subSubId'], $route->getParams());
     }
 
@@ -55,13 +55,13 @@ class RouteTest extends PHPUnit_Framework_TestCase
      */
     public function testPregPattern()
     {
-        $route = new Route('post', 'user/{id}', '#handler');
-        $this->assertEquals('^user/([^/]*)?$', $route->getPregPattern());
+        $route = new Route('post', 'user/<id>', '#handler');
+        $this->assertEquals("^user/(?'id'[^/]*)?$", $route->getPregPattern());
 
-        $route = new Route('post', 'user/{id}/message/{messageId}', '#handler');
-        $this->assertEquals('^user/([^/]*)?/message/([^/]*)?$', $route->getPregPattern());
+        $route = new Route('post', 'user/<id>/message/<messageId>', '#handler');
+        $this->assertEquals("^user/(?'id'[^/]*)?/message/(?'messageId'[^/]*)?$", $route->getPregPattern());
 
-        $route = new Route('post', 'user/{id}/{subId}/{subSubId}', '#handler');
-        $this->assertEquals('^user/([^/]*)?/([^/]*)?/([^/]*)?$', $route->getPregPattern());
+        $route = new Route('post', 'user/<id>/<subId>/<subSubId>', '#handler');
+        $this->assertEquals("^user/(?'id'[^/]*)?/(?'subId'[^/]*)?/(?'subSubId'[^/]*)?$", $route->getPregPattern());
     }
 }
