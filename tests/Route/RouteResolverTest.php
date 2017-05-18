@@ -21,7 +21,7 @@ class RouteResolverTest extends PHPUnit_Framework_TestCase
         $routeResolver = new BaseRouteResolver($request);
 
         $resolvedRoute = $routeResolver->resolve($routeContainer, 'user3/5');
-        $this->assertEquals(new Route('get', 'user3/{id}', '#handler3'), $resolvedRoute->getRoute());
+        $this->assertEquals(new Route('get', 'user3/<id>', '#handler3'), $resolvedRoute->getRoute());
         $this->assertEquals(['id' => 5], $resolvedRoute->getParams());
         $this->assertEquals(5, $resolvedRoute->getParam('id'));
 
@@ -39,7 +39,7 @@ class RouteResolverTest extends PHPUnit_Framework_TestCase
         $routeResolver = new BaseRouteResolver($request);
 
         $resolvedRoute = $routeResolver->resolve($routeContainer, 'user5/10/message/123');
-        $this->assertEquals(new Route('options', 'user5/{id}/message/{messageId}', '#handler5'), $resolvedRoute->getRoute());
+        $this->assertEquals(new Route('options', 'user5/<id>/message/<messageId>', '#handler5'), $resolvedRoute->getRoute());
         $this->assertEquals(['id' => 10, 'messageId' => 123], $resolvedRoute->getParams());
         $this->assertEquals(10, $resolvedRoute->getParam('id'));
         $this->assertEquals(123, $resolvedRoute->getParam('messageId'));
@@ -58,7 +58,7 @@ class RouteResolverTest extends PHPUnit_Framework_TestCase
         $routeResolver = new BaseRouteResolver($request);
 
         $resolvedRoute = $routeResolver->resolve($routeContainer, 'user7/10/20/message/123');
-        $this->assertEquals(new Route('options', 'user7/{id}/{subId}/message/{messageId}', '#handler7'), $resolvedRoute->getRoute());
+        $this->assertEquals(new Route('options', 'user7/<id>/<subId>/message/<messageId>', '#handler7'), $resolvedRoute->getRoute());
         $this->assertEquals(['id' => 10, 'subId' => 20, 'messageId' => 123], $resolvedRoute->getParams());
         $this->assertEquals(10, $resolvedRoute->getParam('id'));
         $this->assertEquals(20, $resolvedRoute->getParam('subId'));
@@ -99,18 +99,55 @@ class RouteResolverTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test regular expression in route definition
+     */
+    public function testRegularExpression()
+    {
+        $route1 = new Route('post', 'v{2,3}/user/(.*)?/<id>/[mg]/(a|b)/<subId>', '#handler1');
+        $route2 = new Route('options', '.*', '#handler2');
+        $route3 = new Route('post', 'user/<id>', '#handler3');
+
+        $routeContainer = new RouteContainer();
+        $routeContainer->add($route1);
+        $routeContainer->add($route2);
+        $routeContainer->add($route3);
+
+        $request = new Request(new UrlScript(), null, null, null, null, null, 'options');
+        $routeResolver = new BaseRouteResolver($request);
+        $resolvedRoute = $routeResolver->resolve($routeContainer, 'user5/10/message/123');
+
+        $this->assertEquals('options', $resolvedRoute->getRoute()->getMethod());
+        $this->assertEquals('.*', $resolvedRoute->getRoute()->getPattern());
+        $this->assertEquals([], $resolvedRoute->getParams());
+
+        $request = new Request(new UrlScript(), null, null, null, null, null, 'post');
+        $routeResolver = new BaseRouteResolver($request);
+        $resolvedRoute = $routeResolver->resolve($routeContainer, 'vv/user/something/other/7/m/a/2');
+
+        $this->assertEquals('post', $resolvedRoute->getRoute()->getMethod());
+        $this->assertEquals('v{2,3}/user/(.*)?/<id>/[mg]/(a|b)/<subId>', $resolvedRoute->getRoute()->getPattern());
+        $this->assertEquals(['id' => 7, 'subId' => 2], $resolvedRoute->getParams());
+
+        $resolvedRoute = $routeResolver->resolve($routeContainer, 'user/5');
+
+        $this->assertEquals('post', $resolvedRoute->getRoute()->getMethod());
+        $this->assertEquals('user/<id>', $resolvedRoute->getRoute()->getPattern());
+        $this->assertEquals(['id' => 5], $resolvedRoute->getParams());
+    }
+
+    /**
      * Prepare route container for later use
      * @return RouteContainer
      */
     private function prepareRouteContainer()
     {
-        $route1 = new Route('post', 'user1/{id}', '#handler1');
-        $route2 = new Route('post', 'user2/{id}', '#handler2');
-        $route3 = new Route('get', 'user3/{id}', '#handler3');
-        $route4 = new Route('put', 'user4/{id}', '#handler4');
-        $route5 = new Route('options', 'user5/{id}/message/{messageId}', '#handler5');
-        $route6 = new Route('delete', 'user6/{id}', '#handler6');
-        $route7 = new Route('options', 'user7/{id}/{subId}/message/{messageId}', '#handler7');
+        $route1 = new Route('post', 'user1/<id>', '#handler1');
+        $route2 = new Route('post', 'user2/<id>', '#handler2');
+        $route3 = new Route('get', 'user3/<id>', '#handler3');
+        $route4 = new Route('put', 'user4/<id>', '#handler4');
+        $route5 = new Route('options', 'user5/<id>/message/<messageId>', '#handler5');
+        $route6 = new Route('delete', 'user6/<id>', '#handler6');
+        $route7 = new Route('options', 'user7/<id>/<subId>/message/<messageId>', '#handler7');
 
         $routeContainer = new RouteContainer();
         $routeContainer->add($route1);

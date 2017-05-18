@@ -13,13 +13,13 @@ class RouteContainerTest extends PHPUnit_Framework_TestCase
      */
     public function testBasics()
     {
-        $route1 = new Route('post', 'user1/{id}', '#handler1');
-        $route2 = new Route('post', 'user2/{id}', '#handler2');
-        $route3 = new Route('get', 'user3/{id}', '#handler3');
-        $route4 = new Route('put', 'user4/{id}', '#handler4');
-        $route5 = new Route('options', 'user5/{id}', '#handler5');
-        $route6 = new Route('delete', 'user6/{id}', '#handler6');
-        $route7 = new Route('options', 'user7/{id}', '#handler7');
+        $route1 = new Route('post', 'user1/<id>', '#handler1');
+        $route2 = new Route('post', 'user2/<id>', '#handler2');
+        $route3 = new Route('get', 'user3/<id>', '#handler3');
+        $route4 = new Route('put', 'user4/<id>', '#handler4');
+        $route5 = new Route('options', 'user5/<id>', '#handler5');
+        $route6 = new Route('delete', 'user6/<id>', '#handler6');
+        $route7 = new Route('options', 'user7/<id>', '#handler7');
 
         $routeContainer = new RouteContainer();
         $routeContainer->add($route1);

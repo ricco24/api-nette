@@ -2,6 +2,7 @@
 
 ## [Unreleased][unreleased]
 ### Added
+- Support for regular expressions in route definitions
 - CORSMiddleware
 - OptionsPreflightHandler
 - TextApiResponse

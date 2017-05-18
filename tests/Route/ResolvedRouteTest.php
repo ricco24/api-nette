@@ -4,7 +4,6 @@ namespace Kelemen\ApiNette\Tests;
 
 use Kelemen\ApiNette\Route\ResolvedRoute;
 use Kelemen\ApiNette\Route\Route;
-use Kelemen\ApiNette\Route\RouteContainer;
 use PHPUnit_Framework_TestCase;
 
 class ResolvedRouteTest extends PHPUnit_Framework_TestCase
@@ -19,7 +18,7 @@ class ResolvedRouteTest extends PHPUnit_Framework_TestCase
             'messageId' => 10
         ];
 
-        $route = new Route('post', 'user/{id}', 'Kelemen/ApiNette/Handler/UserGetHandler');
+        $route = new Route('post', 'user/<id>', 'Kelemen/ApiNette/Handler/UserGetHandler');
         $resolvedRoute = new ResolvedRoute($route, $params);
 
         $this->assertEquals($route, $resolvedRoute->getRoute());

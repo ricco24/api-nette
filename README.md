@@ -45,9 +45,9 @@ composer require kelemen/api-nette
             class: Kelemen\ApiNette\Api
             setup:
                 - get('users', 'Custom\Users\ListHandler')
-                - get('users/{id}', 'Custom\Users\DetailHandler')
-                - put('users/{id}', 'Custom\Users\CrateHandler', [middleware: ['Custom\Auth\Bearer'])
-                - post('users/{id}', 'Custom\Users\UpdateHandler', [middleware: ['Custom\Auth\Bearer']])
+                - get('users/<id>', 'Custom\Users\DetailHandler')
+                - put('users/<id>', 'Custom\Users\CrateHandler', [middleware: ['Custom\Auth\Bearer'])
+                - post('users/<id>', 'Custom\Users\UpdateHandler', [middleware: ['Custom\Auth\Bearer']])
     ```
 
 ## Api routes
@@ -70,12 +70,19 @@ $api->add('purge', 'purge/urls', 'Handlers\PurgeHandler')
 
 ### Route patterns
 
-In route pattern you can use replacements closed in **{** and **}**.
+In route definition you can use regular patterns or define parameters closed in **<** and **>**. Routes are evaluated in order they was added. So define specific routes first.
 ```php
 $api = new Api(...);
 $api->get('users', 'Handler');         // exact match for (with our route) /api/users
-$api->get('users/{id}', 'Handler');    // parse parameter id from routes like /api/users/10, /api/users/sdk-2323 etc.
-$api->get('users/{id}/message/{messageId}', 'Handler') // parse parameters id and messageId from matched requests
+$api->get('users/<id>', 'Handler');    // parse parameter id from routes like /api/users/10, /api/users/sdk-2323 etc.
+$api->get('users/<id>/message/<messageId>', 'Handler'); // parse parameters id and messageId from matched requests
+
+// Optional parameters are not supported. If optional parameter is needed we have to define multiple routes.
+$api->get('users/<id>/message', 'Handler');
+$api->get('users/<id>/message/<messageId>', 'Handler');
+
+// In route definition we can use any regular expression.
+$api->options('.*', 'Handler');          // process OPTIONS call for any incoming URL
 ```
 
 ### Route handlers
@@ -84,7 +91,7 @@ Route definition use **lazy loading** from Nette DI Container. Handlers are defi
 ```php
 $api = new Api(...);
 $api->get('users', 'Full\Namespace\For\Handler');       // By type
-$api->get('users/{id}', '#registeredHandlerName');      // By name
+$api->get('users/<id>', '#registeredHandlerName');      // By name
 ```
 
 ### Route parameters
@@ -252,15 +259,21 @@ If you want custom error responses, create and register your own presenter.
 | Kelemen\ApiNette\Exception\UnresolvedRouteException | None of the registered routes match given url |
 | Kelemen\ApiNette\Exception\ValidationFailedException | Some of registered validations failed |
 | Kelemen\ApiNette\Exception\ValidatorException | Input type use in validation is not registered in validator |
+| Kelemen\ApiNette\Exception\MiddlewareException | Middleware configuration/processing exception
 
 ## Base Implementations
 
 ### Middleware
 #### CORSMiddleware
-Setup Access-Control-Allow-Origin and Access-Control-Allow-Credentials headers. Middleware has 3 modes:
-- all - returns allow-origin as "*". Credentials header disabled by standard.
-- mirror - returns request "Origin" header in allow-origin and credentials header can be configured.
-- custom - allow-origin and credentials header has to be configured.
+Setup **Access-Control-Allow-Origin** and **Access-Control-Allow-Credentials** headers. Middleware has 3 modes:
+- **all** - returns allow-origin as "*". Credentials header is disabled by standard.
+- **mirror** - returns request header "Origin" in allow-origin and credentials header can be configured manually.
+- **custom** - allow-origin header has to be configured and credentials header can be configured manually.
 
 ### Handler
 #### OptionsPreflightHandler
+Configurable handler for browser CORS preflight request. Configurable response headers:
+ - Access-Control-Max-Age
+ - Access-Control-Expose-Headers
+ - Access-Control-Allow-Methods
+ - Access-Control-Allow-Headers

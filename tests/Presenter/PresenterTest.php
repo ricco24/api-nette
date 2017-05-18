@@ -32,7 +32,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
     public function testFlow()
     {
         list($api, $presenter, $container) = $this->prepare();
-        $api->get('user/{id}', '#handler1');
+        $api->get('user/<id>', '#handler1');
 
         /** @var Container $container */
         $container->addService('handler1', new DummyHandler());
@@ -52,7 +52,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
     public function testUnregisteredRoute()
     {
         list($api, $presenter) = $this->prepare();
-        $api->get('user/{id}', '#unknownHandler');
+        $api->get('user/<id>', '#unknownHandler');
 
         $request = new AppRequest('Api:Api:default', 'GET', ['params' => 'message/5']);
         $result = $presenter->run($request);
@@ -69,7 +69,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
     public function testUnregisteredHandler()
     {
         list($api, $presenter) = $this->prepare();
-        $api->get('user/{id}', '#unknownHandler');
+        $api->get('user/<id>', '#unknownHandler');
 
         $request = new AppRequest('Api:Api:default', 'GET', ['params' => 'user/5']);
         $result = $presenter->run($request);
@@ -86,7 +86,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
     public function testUnregisteredMiddleware()
     {
         list($api, $presenter, $container) = $this->prepare();
-        $api->get('user/{id}', '#handler1', ['middleware' => ['#unknownMiddleware']]);
+        $api->get('user/<id>', '#handler1', ['middleware' => ['#unknownMiddleware']]);
 
         /** @var Container $container */
         $container->addService('handler1', new DummyHandler());
@@ -106,7 +106,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
     public function testFailedValidation()
     {
         list($api, $presenter, $container) = $this->prepare();
-        $api->get('user/{id}', '#handler1');
+        $api->get('user/<id>', '#handler1');
 
         /** @var Container $container */
         $container->addService('handler1', new HandlerWithValidation());
@@ -127,7 +127,7 @@ class PresenterTest extends PHPUnit_Framework_TestCase
     public function testNoLibraryException()
     {
         list($api, $presenter, $container) = $this->prepare();
-        $api->get('user/{id}', '#handler1');
+        $api->get('user/<id>', '#handler1');
 
         /** @var Container $container */
         $container->addService('handler1', new HandlerWithException());
