@@ -1,6 +1,8 @@
 # Change log
 
 ## [Unreleased][unreleased]
+
+## 1.0.0 - 2017-05-19
 ### Added
 - Support for regular expressions in route definitions
 - CORSMiddleware
@@ -26,6 +28,7 @@
 ## 0.1.0 - 2016-07-05
 - First tagged version
 
-[unreleased]: https://github.com/ricco24/api-nette/compare/0.3.0...HEAD
+[unreleased]: https://github.com/ricco24/api-nette/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/ricco24/api-nette/compare/0.3.0...1.0.0
 [0.3.0]: https://github.com/ricco24/api-nette/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/ricco24/api-nette/compare/0.1.0...0.2.0
