@@ -19,7 +19,7 @@ abstract class BaseHandler
      */
     protected function getValue($key, $default = null)
     {
-        return isset($this->values[$key]) ? $this->values[$key] : $default;
+        return array_key_exists($key, $this->values) ? $this->values[$key] : $default;
     }
 
     /**
