@@ -2,6 +2,7 @@
 
 ## [Unreleased][unreleased]
 
+## 1.0.1 - 2017-10-26
 ### Fixed
 - Process of NULL input values
 
@@ -31,7 +32,8 @@
 ## 0.1.0 - 2016-07-05
 - First tagged version
 
-[unreleased]: https://github.com/ricco24/api-nette/compare/1.0.0...HEAD
+[unreleased]: https://github.com/ricco24/api-nette/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/ricco24/api-nette/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/ricco24/api-nette/compare/0.3.0...1.0.0
 [0.3.0]: https://github.com/ricco24/api-nette/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/ricco24/api-nette/compare/0.1.0...0.2.0
