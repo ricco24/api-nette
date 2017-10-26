@@ -2,6 +2,9 @@
 
 ## [Unreleased][unreleased]
 
+### Fixed
+- Process of NULL input values
+
 ## 1.0.0 - 2017-05-19
 ### Added
 - Support for regular expressions in route definitions

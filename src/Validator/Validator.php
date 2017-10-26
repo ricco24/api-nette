@@ -106,7 +106,7 @@ class Validator implements ValidatorInterface
 
             // Check if param is mandatory
             if (in_array('required', $rules)) {
-                if (!isset($data[$validation->getKey()])) {
+                if (!array_key_exists($validation->getKey(), $data)) {
                     $this->errors[] = 'Validation for ' . $validation->getKey() . ' failed | required';
                     continue;
                 }
@@ -114,7 +114,7 @@ class Validator implements ValidatorInterface
             }
 
             // Check if optional param is set
-            if (!isset($data[$validation->getKey()])) {
+            if (!array_key_exists($validation->getKey(), $data)) {
                 continue;
             }
 
