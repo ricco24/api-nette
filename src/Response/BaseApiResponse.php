@@ -86,7 +86,7 @@ abstract class BaseApiResponse implements ApiResponse
      * @param IRequest $httpRequest
      * @param IResponse $httpResponse
      */
-    public function send(IRequest $httpRequest, IResponse $httpResponse)
+    public function send(IRequest $httpRequest, IResponse $httpResponse): void
     {
         $httpResponse->setCode($this->getCode());
         $httpResponse->setContentType($this->getContentType(), $this->charset);
